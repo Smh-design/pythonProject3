@@ -41,7 +41,6 @@ fig, ax = plt.subplots(figsize=(8, 6))
 
 # Draw the graph with spring layout, fixed label positions
 pos = nx.spring_layout(G, pos=label_positions, fixed=label_positions.keys())
-
 # Create a scatter plot
 scatter = ax.scatter(*zip(*pos.values()), c=colors, s=np.abs(percentage_changes) * scaling_factor)
 

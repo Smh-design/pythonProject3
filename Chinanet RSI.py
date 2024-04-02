@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 # 获取数据
-data = ak.index_zh_a_hist(symbol="399006", period="daily", start_date="20100601", end_date="20240325")
+data = ak.index_zh_a_hist(symbol="399006", period="daily", start_date="20100601", end_date="20240402")
 
 # 数据预处理
 data['涨跌幅'] = pd.to_numeric(data['涨跌幅']) / 100

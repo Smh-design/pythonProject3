@@ -45,7 +45,7 @@ def fetch_debt_to_penny(start_date, end_date, page_size=1000):
 
 # 使用示例
 end_date = datetime.now().strftime("%Y-%m-%d")
-start_date = (datetime.now() - timedelta(days=3650)).strftime("%Y-%m-%d")  # 获取过去一年的数据
+start_date = (datetime.now() - timedelta(days=3650)).strftime("%Y-%m-%d")  # 获取过去10年的数据
 
 debt_data = fetch_debt_to_penny(start_date, end_date)
 
@@ -66,7 +66,26 @@ if debt_data is not None and not debt_data.empty:
     # 检查是否有足够的数据进行绘图
     if not grouped_data.empty and grouped_data.shape[1] > 0:
         plt.figure(figsize=(14, 8))
-        sns.lineplot(data=grouped_data)
+        ax = sns.lineplot(data=grouped_data)
+
+        # 添加每条线的注释
+        for security_class in grouped_data.columns:
+            y = grouped_data[security_class].dropna()
+            if not y.empty:
+                last_date = y.index[-1]
+                last_value = y.iloc[-1]
+                ax.annotate(
+                    security_class,
+                    xy=(last_date, last_value),
+                    xytext=(last_date, last_value + (last_value * 0.05)),  # Offset annotation
+                    textcoords='data',
+                    ha='center',
+                    va='bottom',
+                    fontsize=9,
+                    bbox=dict(boxstyle='round,pad=0.3', edgecolor='black', facecolor='white'),
+                    arrowprops=dict(facecolor='black', shrink=0.05)
+                )
+
         plt.title('Total Outstanding Debt by Security Class Over Time')
         plt.xlabel('Date')
         plt.ylabel('Total Amount (in million USD)')
@@ -78,4 +97,4 @@ if debt_data is not None and not debt_data.empty:
     else:
         print("分组后的数据为空或没有有效的列，无法绘图。")
 else:
-    print("获取的数据为空，无法进行分析和绘图。") 
+    print("获取的数据为空，无法进行分析和绘图。")
